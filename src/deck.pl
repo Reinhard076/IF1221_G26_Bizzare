@@ -1,3 +1,4 @@
+%Database Kartu
 kartu_mentah([
     kartu(merah, 0), kartu(merah, 1), kartu(merah, 2), kartu(merah, 3), kartu(merah, 4),
     kartu(merah, 5), kartu(merah, 6), kartu(merah, 7), kartu(merah, 8), kartu(merah, 9),
@@ -24,26 +25,7 @@ shuffle_deck :-
     assertz(deck(ListAcak)),
     !.
 
-acak_list([], _, []) :- !.
-acak_list(Sebelum, Count, [Pilihan|Setelah]) :-
-    Count1 is Count + 1,
-    random(1, Count1, Rand),
-    ambil_indeks(Sebelum, Rand, Pilihan, Sisa),
-    C1 is Count - 1,
-    acak_list(Sisa, C1, Setelah),
-    !.
-
-ambil_indeks([H|T], 1, H, T) :- !.
-ambil_indeks([H|T], I, X, [H|Rest]) :-
-    I1 is I - 1,
-    ambil_indeks(T, I1, X, Rest),
-    !.
-
-panjang_list([], 0).
-panjang_list([_|T], N) :-
-    panjang_list(T, N1),
-    N is N1 + 1.
-
+%pembagi kartu
 bagi_kartu(_, 0) :- !.
 bagi_kartu(Pemain, Jumlah) :-
     deck([KartuAtas|SisaDeck]),
@@ -58,11 +40,19 @@ bagi_kartu(Pemain, Jumlah) :-
     bagi_kartu(Pemain, SisaJumlah),
     !.
 
+taruh_di_bawah_deck(Kartu) :-
+    deck(ListLama),
+    retract(deck(_)),
+    gabung_list(ListLama, [Kartu], ListBaru),
+    assertz(deck(ListBaru)),
+    !.
+
 bagikan_kartu_semua_pemain([]) :- !.
 bagikan_kartu_semua_pemain([Pemain|SisaPemain]) :-
     bagi_kartu(Pemain, 7),
     bagikan_kartu_semua_pemain(SisaPemain).
 
+%discard pile
 inisialisasi_discard_pile :-
     deck([KartuAtas|SisaDeck]),
     retract(deck(_)),
@@ -87,13 +77,27 @@ is_kartu_aksi(kartu(_, wild)).
 is_kartu_aksi(kartu(_, wild_draw_four)).
 is_kartu_aksi(kartu(_, mimic)).
 
-taruh_di_bawah_deck(Kartu) :-
-    deck(ListLama),
-    retract(deck(_)),
-    gabung_list(ListLama, [Kartu], ListBaru),
-    assertz(deck(ListBaru)),
+--------------------------------------------------------------------
+acak_list([], _, []) :- !.
+acak_list(Sebelum, Count, [Pilihan|Setelah]) :-
+    Count1 is Count + 1,
+    random(1, Count1, Rand),
+    ambil_indeks(Sebelum, Rand, Pilihan, Sisa),
+    C1 is Count - 1,
+    acak_list(Sisa, C1, Setelah),
     !.
 
 gabung_list([], L, L).
 gabung_list([H|T], L, [H|R]) :-
     gabung_list(T, L, R).
+    
+panjang_list([], 0).
+panjang_list([_|T], N) :-
+    panjang_list(T, N1),
+    N is N1 + 1.
+        
+ambil_indeks([H|T], 1, H, T) :- !.
+ambil_indeks([H|T], I, X, [H|Rest]) :-
+    I1 is I - 1,
+    ambil_indeks(T, I1, X, Rest),
+    !.
