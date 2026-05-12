@@ -77,7 +77,7 @@ is_kartu_aksi(kartu(_, wild)).
 is_kartu_aksi(kartu(_, wild_draw_four)).
 is_kartu_aksi(kartu(_, mimic)).
 
---------------------------------------------------------------------
+%--------------------------------------------------------------------
 acak_list([], _, []) :- !.
 acak_list(Sebelum, Count, [Pilihan|Setelah]) :-
     Count1 is Count + 1,
