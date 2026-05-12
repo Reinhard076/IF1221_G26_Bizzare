@@ -53,7 +53,7 @@ addNewName(Name) :-
     !.
 
 randomizer :-
-    findall(Nama, daftar_pemain(Nama), X),
+    find_AllName(X),
     jumlah_pemain(Count),
     random_List(X, Count, Y),
     retractall(daftar_pemain(_)),
@@ -74,4 +74,13 @@ pick_atI([H|T], 1, H, T) :- !.
 pick_atI([H|T], I, X, [H|Rest]) :-
     I1 is I - 1,
     pick_atI(T, I1, X, Rest),
+    !.
+
+find_AllName([]) :-
+    \+ daftar_pemain(_),
+    !.
+find_AllName([Name|T]) :-
+    daftar_pemain(Name),
+    retract(daftar_pemain(Name)),
+    find_AllName(T),
     !.
