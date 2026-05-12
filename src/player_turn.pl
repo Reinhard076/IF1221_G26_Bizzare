@@ -1,5 +1,3 @@
-:- use_module(library(lists)).
-
 eksekusi_mainkan(NomorUrut) :-
     giliran_sekarang(Pemain),
     tangan_pemain(Pemain, Tangan),
