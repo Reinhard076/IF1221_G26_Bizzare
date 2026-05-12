@@ -1,6 +1,3 @@
-% 1. DATABASE KARTU MENTAH (Total 55 Kartu Unik)
-% Format: kartu(Warna, Jenis)
-% Jenis: 0-9 (Angka), skip, reverse, draw_two, wild, wild_draw_four, mimic
 kartu_mentah([
     kartu(merah, 0), kartu(merah, 1), kartu(merah, 2), kartu(merah, 3), kartu(merah, 4),
     kartu(merah, 5), kartu(merah, 6), kartu(merah, 7), kartu(merah, 8), kartu(merah, 9),
@@ -19,9 +16,6 @@ kartu_mentah([
     kartu(hitam, wild), kartu(hitam, wild_draw_four), kartu(hitam, mimic)
 ]).
 
-% -------------------------------------------------------------------------
-% 2. LOGIKA MENGACAK DECK (shuffle_deck/0)
-% -------------------------------------------------------------------------
 shuffle_deck :-
     kartu_mentah(ListAsal),
     panjang_list(ListAsal, Panjang),
@@ -30,7 +24,6 @@ shuffle_deck :-
     assertz(deck(ListAcak)),
     !.
 
-% Helper mengacak list secara rekursif
 acak_list([], _, []) :- !.
 acak_list(Sebelum, Count, [Pilihan|Setelah]) :-
     Count1 is Count + 1,
@@ -40,14 +33,12 @@ acak_list(Sebelum, Count, [Pilihan|Setelah]) :-
     acak_list(Sisa, C1, Setelah),
     !.
 
-% Helper mengambil elemen berdasarkan indeks (1-based)
 ambil_indeks([H|T], 1, H, T) :- !.
 ambil_indeks([H|T], I, X, [H|Rest]) :-
     I1 is I - 1,
     ambil_indeks(T, I1, X, Rest),
     !.
 
-% Helper menghitung panjang list manual
 panjang_list([], 0).
 panjang_list([_|T], N) :-
     panjang_list(T, N1),
