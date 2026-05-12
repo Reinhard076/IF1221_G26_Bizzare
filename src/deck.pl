@@ -1,3 +1,3 @@
-shuffle_deck():-
-bagi_kartu():-
+shuffle_deck(Dek):-
+bagi_kartu(Dek,Player):-
 discard_pile():-
