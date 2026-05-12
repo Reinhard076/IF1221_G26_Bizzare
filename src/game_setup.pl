@@ -3,7 +3,6 @@ startGame :-
     write('Permainan sudah dimulai').
 
 startGame :-
-    startGame :-
     assertz(is_game_started(true)),
     write('Masukkan jumlah pemain: '),
     read(Player),
