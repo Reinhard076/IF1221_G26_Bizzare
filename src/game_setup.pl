@@ -1,5 +1,3 @@
-:- include('state.pl').
-
 startGame :-
     is_game_started(true), !,
     write('Permainan sudah dimulai').
