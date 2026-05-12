@@ -15,6 +15,9 @@
 :- dynamic(sudah_uni/1).             % List pemain yang sudah menyerukan UNI
 :- dynamic(kartu_tersembunyi/2).     % Bonus: kartu_tersembunyi(Nama, Kartu)
 
+% Fakta untuk helper
+:- dynamic(temp/1).
+
 % Inisialisasi awal (Default State)
 is_game_started(false).
 arah_permainan(kanan).
