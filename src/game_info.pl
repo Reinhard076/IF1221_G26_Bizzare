@@ -35,7 +35,7 @@ cetak_urutan([Pemain|Sisa]) :-
 cetak_info_pemain([], _) :- !.
 cetak_info_pemain([Pemain|Sisa], Index) :-
     format('Nama pemain ~d: ~w~n', [Index, Pemain]),
-    (tangan_pemain(Pemain, Tangan) -> length(Tangan, JumlahKartu) ; JumlahKartu = 0),
+    (tangan_pemain(Pemain, Tangan) -> panjang_list(Tangan, JumlahKartu) ; JumlahKartu = 0),
     format('Jumlah kartu : ~d~n', [JumlahKartu]), nl,
     NextIndex is Index + 1,
     cetak_info_pemain(Sisa, NextIndex).
