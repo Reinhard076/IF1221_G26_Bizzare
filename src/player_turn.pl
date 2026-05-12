@@ -1,7 +1,7 @@
 eksekusi_mainkan(NomorUrut) :-
     giliran_sekarang(Pemain),
     tangan_pemain(Pemain, Tangan),
-    length(Tangan, Panjang),
+    panjang_list(Tangan, Panjang),
     NomorUrut >= 1, NomorUrut =< Panjang,
     nth1(NomorUrut, Tangan, Kartu),
     ( validasiKartu(Kartu)
@@ -54,11 +54,11 @@ pindah_giliran :-
     format('Sekarang giliran ~w.~n', [Next]).
 
 get_next_player(Current, List, kanan, Next) :-
-    nth0(I, List, Current), length(List, Total),
+    nth0(I, List, Current), panjang_list(List, Total),
     I1 is (I + 1) mod Total, nth0(I1, List, Next).
 
 get_next_player(Current, List, kiri, Next) :-
-    nth0(I, List, Current), length(List, Total),
+    nth0(I, List, Current), panjang_list(List, Total),
     I1 is (I - 1 + Total) mod Total, nth0(I1, List, Next).
 
 % hapus_kartu/2 — helper internal
