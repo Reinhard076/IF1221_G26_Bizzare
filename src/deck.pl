@@ -87,14 +87,6 @@ acak_list(Sebelum, Count, [Pilihan|Setelah]) :-
     acak_list(Sisa, C1, Setelah),
     !.
 
-gabung_list([], L, L).
-gabung_list([H|T], L, [H|R]) :-
-    gabung_list(T, L, R).
-    
-panjang_list([], 0).
-panjang_list([_|T], N) :-
-    panjang_list(T, N1),
-    N is N1 + 1.
         
 ambil_indeks([H|T], 1, H, T) :- !.
 ambil_indeks([H|T], I, X, [H|Rest]) :-
