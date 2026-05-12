@@ -1,3 +1,3 @@
-shuffle_deck()::-
+shuffle_deck():-
 bagi_kartu():-
 discard_pile():-
