@@ -3,14 +3,26 @@ startGame :-
     write('Permainan sudah dimulai').
 
 startGame :-
+    startGame :-
     assertz(is_game_started(true)),
     write('Masukkan jumlah pemain: '),
     read(Player),
     valid_Player(Player),
     read_PlayerNames(Player, 1),
     randomizer,
-    !.
 
+    daftar_pemain(ListPemain),
+    write('Urutan pemain: '), cetak_urutan(ListPemain), nl,
+    
+    ListPemain = [PemainPertama | _],
+    assertz(giliran_sekarang(PemainPertama)),
+    
+    shuffle_deck,
+    bagikan_kartu_semua_pemain(ListPemain),
+    write('Setiap pemain mendapatkan 7 kartu acak.'), nl,
+    inisialisasi_discard_pile,
+    format('Giliran ~w.~n', [PemainPertama]),
+    !.
 
 valid_Player(Player) :-
     Player >= 2,
