@@ -3,23 +3,30 @@ startGame :-
     write('Permainan sudah dimulai').
 
 startGame :-
+    is_game_started(true), !,
+    write('Permainan sudah dimulai.').
+
+startGame :-
     assertz(is_game_started(true)),
     write('Masukkan jumlah pemain: '),
     read(Player),
     valid_Player(Player),
-    read_PlayerNames(Player, 1),
-    randomizer,
+    jumlah_pemain(JumlahValid),
+    read_PlayerNames(JumlahValid, 1),
+    randomizer, nl,
 
     daftar_pemain(ListPemain),
-    write('Urutan pemain: '), cetak_urutan(ListPemain), nl,
+    write('Urutan pemain: '), cetak_urutan_dot(ListPemain), nl, nl,
     
     ListPemain = [PemainPertama | _],
     assertz(giliran_sekarang(PemainPertama)),
     
     shuffle_deck,
     bagikan_kartu_semua_pemain(ListPemain),
-    write('Setiap pemain mendapatkan 7 kartu acak.'), nl,
+    write('Setiap pemain mendapatkan 7 kartu acak.'), nl, nl,
     inisialisasi_discard_pile,
+    discard_top(kartu(Warna, Jenis)),
+    format('Kartu discard top: ~w-~w.~n', [Warna, Jenis]), nl,
     format('Giliran ~w.~n', [PemainPertama]),
     !.
 
@@ -52,7 +59,7 @@ read_PlayerNames(All, Count) :-
 
 addNewName(Name) :-
     daftar_pemain(Name),
-    write('Nama sudah digunakan. Masukkan nama lain : '),
+    write('Nama sudah digunakan. Masukkan nama lain: '),
     read(NewName),
     !,
     addNewName(NewName).
@@ -93,3 +100,10 @@ find_AllName([Name|T]) :-
     retract(daftar_pemain(Name)),
     find_AllName(T),
     !.
+
+cetak_urutan_dot([]) :- !.
+cetak_urutan_dot([Pemain]) :-
+    write(Pemain), write('.'), !.
+cetak_urutan_dot([Pemain|Sisa]) :-
+    write(Pemain), write(' - '),
+    cetak_urutan_dot(Sisa).
