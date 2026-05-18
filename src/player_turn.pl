@@ -6,7 +6,7 @@ eksekusi_mainkan(NomorUrut) :-
     Idx is NomorUrut - 1,
     nilaiIdx(Idx, Tangan, Kartu),
     Kartu = kartu(Warna, Jenis), 
-    ( validasiKartu(Kartu)
+    (validasi_kartu(Kartu)
     ->  hapus_kartu(Pemain, Kartu),
         retractall(discard_top(_)),
         assertz(discard_top(Kartu)),
@@ -23,6 +23,16 @@ eksekusi_mainkan(NomorUrut) :-
 eksekusi_mainkan(_) :-
     write('Nomor kartu tidak valid.'), nl.
 
+% validasiKartu/1
+% validasiKartu(kartu(_, wild))           :- !.
+% validasiKartu(kartu(_, wild_draw_four)) :- !.
+% validasiKartu(kartu(W, _)) :- warna_aktif(W), !.
+% validasiKartu(kartu(W, _)) :- discard_top(kartu(W, _)), W \= none, !.
+% validasiKartu(kartu(_, J)) :- discard_top(kartu(_, J)), !.
+
+% orang 2 panggil fungsi action cardsnya
+% orang 3 panggil status UNI
+% orang 4 panggil pengecekan endgame
 
 ambilKartu :-
     is_game_started(true), !,
