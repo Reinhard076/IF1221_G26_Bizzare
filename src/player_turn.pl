@@ -11,8 +11,12 @@ eksekusi_mainkan(NomorUrut) :-
         retractall(discard_top(_)),
         assertz(discard_top(Kartu)),
         format('~w memainkan kartu: ~w-~w~n', [Pemain, Warna, Jenis]),
-        pindah_giliran,
-        !
+        efek(Warna, Jenis),
+        ( Jenis \== skip
+        ->  pindah_giliran,
+            !
+        ;   !
+        )
     ;   write('Kartu tidak cocok dengan discard top.'), nl
     ).
 
@@ -47,6 +51,14 @@ ambilKartu :-
 
 ambilKartu :-
     write('Error: Permainan belum dimulai! Gunakan startGame. dulu.'), nl.
+
+pindah_giliran_skip :-
+    giliran_sekarang(Current),
+    daftar_pemain(List), 
+    arah_permainan(Arah),
+    get_next_player(Current, List, Arah, Next),
+    retractall(giliran_sekarang(_)),
+    assertz(giliran_sekarang(Next)).
 
 pindah_giliran :-
     giliran_sekarang(Current),

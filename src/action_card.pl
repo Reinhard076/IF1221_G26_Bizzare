@@ -1,0 +1,136 @@
+efek(Warna, Aksi) :-
+    is_kartu_aksi(kartu(_, Aksi)),
+    giliran_sekarang(pemain),
+    \+ turn_aksi(_, _, _, _),
+    assertz(turn_aksi(Warna, Aksi, Pemain, 0)),
+    efek_aksi(Aksi),
+    !.
+
+efek(Warna, Aksi) :-
+    is_kartu_aksi(kartu(_, Aksi)),
+    giliran_sekarang(Pemain),
+    retractall(turn_aksi(_, _, _, _)),
+    assertz(turn_aksi(Aksi, Warna, Pemain, 0)),
+    efek_aksi(Aksi),
+    !.
+
+efek(_, _) :-
+    turn_aksi(Aksi, Warna, Pemain, Turn),
+    T is Turn + 1,
+    retractall(turn_aksi(_, _, _, _)),
+    assertz(turn_aksi(Aksi, Warna, Pemain, T)),
+    !.
+
+efek_aksi(skip) :-
+    pindah_giliran_skip,
+    giliran_sekarang(Next),
+    format('~w diskip.~n', [Next]),
+    pindah_giliran_skip,
+    !.
+
+efek_aksi(reverse) :-
+    ( arah_permainan(kiri)
+    -> retractall(arah_permainan(_)),
+       assertz(arah_permainan(kanan)),
+       write('Arah permainan dibalik.'), nl
+    ;  retractall(arah_permainan(_)),
+       assertz(arah_permainan(kiri)),
+       write('Arah permainan dibalik.'), nl
+    ),
+    !.
+
+efek_aksi(draw_two) :-
+    giliran_sekarang(Current),
+    daftar_pemain(List), 
+    arah_permainan(Arah),
+    get_next_player(Current, List, Arah, Next),
+    format('~w mengambil 2 kartu.~n', [Next]),
+    ambilKartuAksi(Next, 2),
+    !.
+
+efek_aksi(wild_draw_four) :-
+    write('Masukkan Warna :'),
+    read(Warna),
+    retractall(warna_aktif(_)),
+    warna_wild(Warna),
+    format('Warna diubah menjadi ~w.~n', [Warna]),
+    giliran_sekarang(Current),
+    daftar_pemain(List), 
+    arah_permainan(Arah),
+    get_next_player(Current, List, Arah, Next),
+    format('~w mengambil 4 kartu.~n', [Next]),
+    ambilKartuAksi(Next, 4),
+    !.
+
+efek_aksi(mimic) :-
+    \+ turn_aksi(_, _, _, _),
+    write('Menelusuri riwayat permainan.'), nl,
+    write('Belum ada kartu aksi yang dimainkan.'), nl,
+    write('Masukkan Warna :'),
+    read(Warna),
+    retractall(warna_aktif(_)),
+    warna_wild(Warna),
+    format('Warna diubah menjadi ~w.~n', [Warna]),
+    !.
+
+efek_aksi(mimic) :-
+    turn_aksi(Aksi, Warna, Pemain, Turn),
+    write('Menelusuri riwayat permainan.'), nl,
+    format('Kartu aksi terakhir yang dimainkan: ~w-~w (oleh ~w, ~d giliran lalu).~n', [Warna, Aksi, Pemain, Turn] ),
+    format('Kartu mimic menyalin efek ~w.~n', [Aksi]),
+    write('Masukkan Warna :'),
+    read(Warna),
+    retractall(warna_aktif(_)),
+    warna_wild(Warna),
+    format('Warna diubah menjadi ~w.~n', [Warna]),
+    !.
+
+efek_aksi(draw_four) :-
+    giliran_sekarang(Current),
+    daftar_pemain(List), 
+    arah_permainan(Arah),
+    get_next_player(Current, List, Arah, Next),
+    format('~w mengambil 4 kartu.~n', [Next]),
+    ambilKartuAksi(Next, 4),
+    !.
+
+efek_aksi(wild) :-
+    write('Masukkan Warna :'),
+    read(Warna),
+    retractall(warna_aktif(_)),
+    warna_wild(Warna),
+    format('Warna diubah menjadi ~w.~n', [Warna]),
+    !.
+
+efek_aksi(_) :-
+    !.
+
+ambilKartuAksi(_, 0) :-
+    !.
+
+ambilKartuAksi(Pemain, Jumlah) :-
+    deck(Deck),
+    ( Deck = [Kartu|Sisa]
+    ->  retractall(deck(_)), 
+        assertz(deck(Sisa)),
+        tangan_pemain(Pemain, Tangan),
+        retractall(tangan_pemain(Pemain, _)),
+        assertz(tangan_pemain(Pemain, [Kartu|Tangan]))
+    ;   write('Deck kosong!'), nl
+    ),
+    J is Jumlah - 1,
+    ambilKartuAksi(Pemain, J),
+    !.
+
+
+warna_wild(W) :-
+    (W == merah ->  assertz(warna_aktif(merah))
+    ; W == hijau -> assertz(warna_aktif(hijau))
+    ; W == kuning -> assertz(warna_aktif(kuning))
+    ; W == biru -> assertz(warna_aktif(biru))
+    ; write('Input warna tidak valid'), nl,
+      read(Warna),
+      warna_wild(Warna)   
+    ),
+    !.
+

@@ -5,6 +5,7 @@
 :- include('player_turn.pl').
 :- include('game_info.pl').
 :- include('helper.pl').
+:- include('action_card.pl').
 :- include('validasi.pl')
 
 start :-
