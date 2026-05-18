@@ -1,13 +1,16 @@
-efek(Warna, Aksi) :-
-    is_kartu_aksi(kartu(_, Aksi)),
-    giliran_sekarang(pemain),
-    \+ turn_aksi(_, _, _, _),
-    assertz(turn_aksi(Warna, Aksi, Pemain, 0)),
-    efek_aksi(Aksi),
+efek(_, mimic) :-
+    efek_aksi(mimic),
+    ( turn_aksi(AksiLama, WarnaLama, PemainLama, TurnLama)
+    -> T is TurnLama + 1,
+       retractall(turn_aksi(_, _, _, _)),
+       assertz(turn_aksi(AksiLama, WarnaLama, PemainLama, T))
+    ;  true
+    ),
     !.
 
 efek(Warna, Aksi) :-
     is_kartu_aksi(kartu(_, Aksi)),
+    Aksi \== mimic,
     giliran_sekarang(Pemain),
     retractall(turn_aksi(_, _, _, _)),
     assertz(turn_aksi(Aksi, Warna, Pemain, 0)),
@@ -15,10 +18,13 @@ efek(Warna, Aksi) :-
     !.
 
 efek(_, _) :-
-    turn_aksi(Aksi, Warna, Pemain, Turn),
-    T is Turn + 1,
+    turn_aksi(AksiLama, WarnaLama, PemainLama, TurnLama),
+    T is TurnLama + 1,
     retractall(turn_aksi(_, _, _, _)),
-    assertz(turn_aksi(Aksi, Warna, Pemain, T)),
+    assertz(turn_aksi(AksiLama, WarnaLama, PemainLama, T)),
+    !.
+
+efek(_, _) :-
     !.
 
 efek_aksi(skip) :-
@@ -29,16 +35,18 @@ efek_aksi(skip) :-
     !.
 
 efek_aksi(reverse) :-
-    ( arah_permainan(kiri)
-    -> retractall(arah_permainan(_)),
-       assertz(arah_permainan(kanan)),
-       write('Arah permainan dibalik.'), nl
-    ;  retractall(arah_permainan(_)),
-       assertz(arah_permainan(kiri)),
-       write('Arah permainan dibalik.'), nl
-    ),
+    arah_permainan(kiri),
+    retractall(arah_permainan(_)),
+    assertz(arah_permainan(kanan)),
+    write('Arah permainan dibalik.'), nl,
     !.
 
+efek_aksi(reverse) :-
+    arah_permainan(kanan),
+    retractall(arah_permainan(_)),
+    assertz(arah_permainan(kiri)),
+    write('Arah permainan dibalik.'), nl,
+    !.   
 efek_aksi(draw_two) :-
     giliran_sekarang(Current),
     daftar_pemain(List), 
@@ -46,6 +54,8 @@ efek_aksi(draw_two) :-
     get_next_player(Current, List, Arah, Next),
     format('~w mengambil 2 kartu.~n', [Next]),
     ambilKartuAksi(Next, 2),
+    pindah_giliran_skip,
+    pindah_giliran_skip,
     !.
 
 efek_aksi(wild_draw_four) :-
@@ -60,6 +70,8 @@ efek_aksi(wild_draw_four) :-
     get_next_player(Current, List, Arah, Next),
     format('~w mengambil 4 kartu.~n', [Next]),
     ambilKartuAksi(Next, 4),
+    pindah_giliran_skip,
+    pindah_giliran_skip,
     !.
 
 efek_aksi(mimic) :-
@@ -78,12 +90,17 @@ efek_aksi(mimic) :-
     write('Menelusuri riwayat permainan.'), nl,
     format('Kartu aksi terakhir yang dimainkan: ~w-~w (oleh ~w, ~d giliran lalu).~n', [Warna, Aksi, Pemain, Turn] ),
     format('Kartu mimic menyalin efek ~w.~n', [Aksi]),
-    write('Masukkan Warna :'),
-    read(Warna),
-    retractall(warna_aktif(_)),
-    warna_wild(Warna),
-    format('Warna diubah menjadi ~w.~n', [Warna]),
-    !.
+    ( (Aksi == wild ; Aksi == wild_draw_four)
+    ->  efek_aksi(Aksi)
+    ;   efek_aksi(Aksi),
+        write('Masukkan Warna :'),
+        read(WarnaBaru),
+        retractall(warna_aktif(_)),
+        warna_wild(WarnaBaru),
+        format('Warna diubah menjadi ~w.~n', [WarnaBaru]),
+        !
+    ).
+
 
 efek_aksi(draw_four) :-
     giliran_sekarang(Current),

@@ -27,17 +27,25 @@ validasi_kartu(_, kartu(Warna, draw_two)) :-
 validasi_kartu(_, kartu(hitam, wild)) :-
     discard_top(kartu(_, JenisTop)),
     JenisTop \== wild,
+    JenisTop \== wild_draw_four,
+    JenisTop \== mimic,
     !.
 
 validasi_kartu(Pemain, kartu(hitam, wild_draw_four)) :-
     discard_top(kartu(_, JenisTop)),
+    JenisTop \== wild,
     JenisTop \== wild_draw_four,
+    JenisTop \== mimic,
     warna_aktif(WarnaAktif),
     tangan_pemain(Pemain, Tangan),
     \+ punya_kartu_cocok(Tangan, WarnaAktif, JenisTop),
     !.
 
 validasi_kartu(_, kartu(hitam, mimic)) :-
+    discard_top(kartu(_, JenisTop)),
+    JenisTop \== wild,
+    JenisTop \== wild_draw_four,
+    JenisTop \== mimic,
     !.
 
 punya_kartu_cocok([Kartu|_], WarnaAktif, JenisTop) :-

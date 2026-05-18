@@ -6,16 +6,20 @@ eksekusi_mainkan(NomorUrut) :-
     Idx is NomorUrut - 1,
     nilaiIdx(Idx, Tangan, Kartu),
     Kartu = kartu(Warna, Jenis), 
-    (validasi_kartu(Kartu)
+    (validasi_kartu(Pemain, Kartu)
     ->  hapus_kartu(Pemain, Kartu),
         retractall(discard_top(_)),
         assertz(discard_top(Kartu)),
+        (Warna \== hitam 
+        -> retractall(warna_aktif(_)), 
+           assertz(warna_aktif(Warna)) 
+        ;  true),
         format('~w memainkan kartu: ~w-~w~n', [Pemain, Warna, Jenis]),
         efek(Warna, Jenis),
-        ( Jenis \== skip
-        ->  pindah_giliran,
+        ( (Jenis == skip ; Jenis == draw_two ; Jenis == wild_draw_four)
+        ->  !
+        ;   pindah_giliran,
             !
-        ;   !
         )
     ;   write('Kartu tidak cocok dengan discard top.'), nl
     ).
