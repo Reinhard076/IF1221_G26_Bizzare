@@ -4,6 +4,8 @@
 :- include('game_setup.pl').
 :- include('player_turn.pl').
 :- include('game_info.pl').
+:- include('helper.pl').
+:- include('validasi.pl')
 
 start :-
     write('Selamat datang di Game UNI!'), nl,
