@@ -14,6 +14,7 @@
 % Fakta terkait aturan khusus
 :- dynamic(sudah_uni/1).             % List pemain yang sudah menyerukan UNI
 :- dynamic(kartu_tersembunyi/2).     % Bonus: kartu_tersembunyi(Nama, Kartu)
+:- dynamic(turn_aksi/4).             % Menyimpan kartu aksi terakhir turn_aksi(Aksi, Warna, Pemain, Turn)
 
 % Fakta untuk helper
 :- dynamic(temp/1).

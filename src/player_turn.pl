@@ -11,20 +11,18 @@ eksekusi_mainkan(NomorUrut) :-
         retractall(discard_top(_)),
         assertz(discard_top(Kartu)),
         format('~w memainkan kartu: ~w-~w~n', [Pemain, Warna, Jenis]),
-        pindah_giliran,
-        !
+        efek(Warna, Jenis),
+        ( Jenis \== skip
+        ->  pindah_giliran,
+            !
+        ;   !
+        )
     ;   write('Kartu tidak cocok dengan discard top.'), nl
     ).
 
 eksekusi_mainkan(_) :-
     write('Nomor kartu tidak valid.'), nl.
 
-% validasiKartu/1
-validasiKartu(kartu(_, wild))           :- !.
-validasiKartu(kartu(_, wild_draw_four)) :- !.
-validasiKartu(kartu(W, _)) :- warna_aktif(W), !.
-validasiKartu(kartu(W, _)) :- discard_top(kartu(W, _)), W \= none, !.
-validasiKartu(kartu(_, J)) :- discard_top(kartu(_, J)), !.
 
 ambilKartu :-
     is_game_started(true), !,
@@ -43,6 +41,14 @@ ambilKartu :-
 
 ambilKartu :-
     write('Error: Permainan belum dimulai! Gunakan startGame. dulu.'), nl.
+
+pindah_giliran_skip :-
+    giliran_sekarang(Current),
+    daftar_pemain(List), 
+    arah_permainan(Arah),
+    get_next_player(Current, List, Arah, Next),
+    retractall(giliran_sekarang(_)),
+    assertz(giliran_sekarang(Next)).
 
 pindah_giliran :-
     giliran_sekarang(Current),
