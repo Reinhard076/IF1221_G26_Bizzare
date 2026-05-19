@@ -13,7 +13,7 @@ efek(Warna, Aksi) :-
     Aksi \== mimic,
     giliran_sekarang(Pemain),
     retractall(turn_aksi(_, _, _, _)),
-    assertz(turn_aksi(Aksi, Warna, Pemain, 0)),
+    assertz(turn_aksi(Aksi, Warna, Pemain, 1)),
     efek_aksi(Aksi),
     !.
 
@@ -25,6 +25,19 @@ efek(_, _) :-
     !.
 
 efek(_, _) :-
+    !.
+
+efek_aksi(draw_two) :-
+    assertz(draw_player_two(x)).
+
+
+efek_aksi(wild_draw_four) :-
+    write('Masukkan Warna : '),
+    read(Warna),
+    retractall(warna_aktif(_)),
+    warna_wild(Warna),
+    format('Warna diubah menjadi ~w.~n', [Warna]),
+    assertz(draw_player_four(x)),
     !.
 
 efek_aksi(skip) :-
@@ -47,32 +60,6 @@ efek_aksi(reverse) :-
     assertz(arah_permainan(kiri)),
     write('Arah permainan dibalik.'), nl,
     !.   
-efek_aksi(draw_two) :-
-    giliran_sekarang(Current),
-    daftar_pemain(List), 
-    arah_permainan(Arah),
-    get_next_player(Current, List, Arah, Next),
-    format('~w mengambil 2 kartu.~n', [Next]),
-    ambilKartuAksi(Next, 2),
-    pindah_giliran_skip,
-    pindah_giliran_skip,
-    !.
-
-efek_aksi(wild_draw_four) :-
-    write('Masukkan Warna :'),
-    read(Warna),
-    retractall(warna_aktif(_)),
-    warna_wild(Warna),
-    format('Warna diubah menjadi ~w.~n', [Warna]),
-    giliran_sekarang(Current),
-    daftar_pemain(List), 
-    arah_permainan(Arah),
-    get_next_player(Current, List, Arah, Next),
-    format('~w mengambil 4 kartu.~n', [Next]),
-    ambilKartuAksi(Next, 4),
-    pindah_giliran_skip,
-    pindah_giliran_skip,
-    !.
 
 efek_aksi(mimic) :-
     \+ turn_aksi(_, _, _, _),
@@ -102,17 +89,8 @@ efek_aksi(mimic) :-
     ).
 
 
-efek_aksi(draw_four) :-
-    giliran_sekarang(Current),
-    daftar_pemain(List), 
-    arah_permainan(Arah),
-    get_next_player(Current, List, Arah, Next),
-    format('~w mengambil 4 kartu.~n', [Next]),
-    ambilKartuAksi(Next, 4),
-    !.
-
 efek_aksi(wild) :-
-    write('Masukkan Warna :'),
+    write('Masukkan Warna : '),
     read(Warna),
     retractall(warna_aktif(_)),
     warna_wild(Warna),
@@ -121,6 +99,21 @@ efek_aksi(wild) :-
 
 efek_aksi(_) :-
     !.
+
+efek_draw_two :-
+    giliran_sekarang(Current),
+    format('~w mengambil 2 kartu.~n', [Current]),
+    ambilKartuAksi(Current, 2),
+    retractall(draw_player_two(_)),
+    !.
+
+efek_draw_four :-
+    giliran_sekarang(Current),
+    format('~w mengambil 4 kartu.~n', [Current]),
+    ambilKartuAksi(Current, 4),
+    retractall(draw_player_four(_)),
+    !.
+
 
 ambilKartuAksi(_, 0) :-
     !.
