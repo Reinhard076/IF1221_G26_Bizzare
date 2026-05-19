@@ -69,8 +69,8 @@ IF1221_G26_Bizzare/
 ## Anggota Kelompok
 
 
-| NIM | Nama | Fokus Utama / Spesifikasi Tugas |
-| :---: | :--- | :--- |
+| NIM | Nama |
+| :---: | :--- |
 | 13525094 | Arga Cyrano Simanjuntak |
 | 13525076 | Reinhard Mikhael Tandra |
 | 13525024 | Excell Timothy Josua Tarigan |
