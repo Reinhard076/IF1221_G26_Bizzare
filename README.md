@@ -1,4 +1,4 @@
-# Tugas Besar IF1221 Logika Komputasional - Game UNI
+# Praktikum IF1221 Logika Komputasional - Game UNI
 
 > **Kelompok G26 - Bizzare**
 
@@ -66,13 +66,12 @@ IF1221_G26_Bizzare/
 
 ---
 
-## 👥 Anggota Kelompok
+## Anggota Kelompok
 
-Silakan isi identitas anggota kelompok beserta persentase kontribusi di bawah ini:
 
-| NIM | Nama | Fokus Utama / Spesifikasi Tugas | Kontribusi (%) |
-| :---: | :--- | :--- | :---: |
-| 135xxxx1 | [Nama Anggota 1] | Core System, Game State, & Validasi Kartu | XX% |
-| 135xxxx2 | [Nama Anggota 2] | Game Inisialisasi, Setup Pemain, & Efek Action Cards | XX% |
-| 135xxxx3 | [Nama Anggota 3] | Turn Mechanism, Aturan Khusus (UNI, Tangkap, Tantang) | XX% |
-| 135xxxx4 | [Nama Anggota 4] | Game UI, Info System, Endgame, & Scoring | XX% |
+| NIM | Nama | Fokus Utama / Spesifikasi Tugas |
+| :---: | :--- | :--- |
+| 13525094 | Arga Cyrano Simanjuntak |
+| 13525076 | Reinhard Mikhael Tandra |
+| 13525024 | Excell Timothy Josua Tarigan |
+| 13525072 | Fahrezy Fitriansyah |
