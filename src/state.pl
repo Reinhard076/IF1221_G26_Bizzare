@@ -9,7 +9,10 @@
 :- dynamic(deck/1).                  % List kartu yang bisa diambil (draw pile)
 :- dynamic(discard_top/1).           % Kartu teratas di meja: kartu(Warna, Jenis)
 :- dynamic(tangan_pemain/2).         % tangan_pemain(Nama, ListKartu)
+:- dynamic(draw_player_two/1).              % pemain harus mengambil 2 kartu
+:- dynamic(draw_player_four/1).             % pemain harus mengambil 4 kartu
 :- dynamic(warna_aktif/1).           % Warna yang berlaku setelah kartu wild
+
 
 % Fakta terkait aturan khusus
 :- dynamic(sudah_uni/1).             % List pemain yang sudah menyerukan UNI

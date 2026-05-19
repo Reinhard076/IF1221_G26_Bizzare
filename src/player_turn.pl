@@ -16,7 +16,7 @@ eksekusi_mainkan(NomorUrut) :-
         ;  true),
         format('~w memainkan kartu: ~w-~w~n', [Pemain, Warna, Jenis]),
         efek(Warna, Jenis),
-        ( (Jenis == skip ; Jenis == draw_two ; Jenis == wild_draw_four)
+        ( Jenis == skip
         ->  !
         ;   pindah_giliran,
             !
@@ -37,6 +37,20 @@ eksekusi_mainkan(_) :-
 % orang 2 panggil fungsi action cardsnya
 % orang 3 panggil status UNI
 % orang 4 panggil pengecekan endgame
+
+ambilKartu :-
+    is_game_started(true),
+    draw_player_two(_),
+    efek_draw_two,
+    pindah_giliran,
+    !.
+
+ambilKartu :-
+    is_game_started(true),
+    draw_player_four(_),
+    efek_draw_four,
+    pindah_giliran,
+    !.
 
 ambilKartu :-
     is_game_started(true), !,

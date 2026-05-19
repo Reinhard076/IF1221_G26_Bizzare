@@ -12,6 +12,18 @@ start :-
     write('Selamat datang di Game UNI!'), nl,
     write('Ketik "startGame." untuk memulai permainan.'), nl.
 
+mainkanKartu(_) :-
+    is_game_started(true),
+    draw_player_two(_),
+    write('Harus mengambil kartu!'), nl,
+    !.
+
+mainkanKartu(_) :-
+    is_game_started(true),
+    draw_player_four(_),
+    write('Harus mengambil kartu!'), nl,
+    !.
+
 mainkanKartu(N) :-
     is_game_started(true),
     !,
