@@ -8,6 +8,8 @@ startGame :-
 
 startGame :-
     assertz(is_game_started(true)),
+    assertz(arah_permainan(kanan)),
+    assertz(sudah_uni([])),
     write('Masukkan jumlah pemain: '),
     read(Player),
     valid_Player(Player),

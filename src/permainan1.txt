@@ -1,0 +1,11 @@
+daftar_pemain:[c,a,b].
+jumlah_pemain:3.
+giliran_sekarang:c.
+discard_top:kartu(kuning,8).
+warna_aktif:kuning.
+arah_permainan:kanan.
+sudah_uni:[].
+kartu(c):[kartu(hijau,7),kartu(hijau,6),kartu(kuning,reverse),kartu(merah,0),kartu(merah,2),kartu(kuning,7),kartu(merah,5)].
+kartu(a):[kartu(merah,draw_two),kartu(hijau,1),kartu(biru,6),kartu(merah,skip),kartu(biru,skip),kartu(kuning,9),kartu(kuning,3)].
+kartu(b):[kartu(biru,0),kartu(kuning,1),kartu(merah,7),kartu(merah,reverse),kartu(hitam,wild_draw_four),kartu(biru,4),kartu(biru,5)].
+deck:[kartu(kuning,2),kartu(biru,9),kartu(hijau,8),kartu(merah,8),kartu(hijau,2),kartu(biru,2),kartu(biru,reverse),kartu(biru,8),kartu(hitam,mimic),kartu(hijau,reverse),kartu(hijau,4),kartu(merah,6),kartu(kuning,5),kartu(biru,3),kartu(merah,3),kartu(hijau,skip),kartu(biru,7),kartu(merah,9),kartu(hitam,wild),kartu(merah,4),kartu(kuning,skip),kartu(kuning,6),kartu(hijau,5),kartu(biru,1),kartu(merah,1),kartu(kuning,draw_two),kartu(kuning,4),kartu(hijau,0),kartu(biru,draw_two),kartu(hijau,draw_two),kartu(hijau,9),kartu(hijau,3),kartu(kuning,0)].
