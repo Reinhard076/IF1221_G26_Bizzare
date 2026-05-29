@@ -7,6 +7,8 @@
 :- include('helper.pl').
 :- include('action_card.pl').
 :- include('validasi.pl').
+:- include('file.pl').
+
 
 start :-
     write('Selamat datang di Game UNI!'), nl,

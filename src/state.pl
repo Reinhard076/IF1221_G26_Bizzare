@@ -22,7 +22,3 @@
 % Fakta untuk helper
 :- dynamic(temp/1).
 
-% Inisialisasi awal (Default State)
-is_game_started(false).
-arah_permainan(kanan).
-sudah_uni([]).
