@@ -48,7 +48,6 @@ proses_mode(2) :-
     assertz(jumlah_pemain(4)), % Turnamen wajib 4 orang
     read_PlayerNames(4, 1),
 
-    % acak urutan pemain
     randomizer, 
     daftar_pemain([P1, P2, P3, P4]),
     assertz(tim(1, [P1, P2])),
@@ -57,13 +56,11 @@ proses_mode(2) :-
     format('Tim 1 : ~w dan ~w~n', [P1, P2]),
     format('Tim 2 : ~w dan ~w~n', [P3, P4]), nl,
 
-    % buat selang-seling
     retractall(daftar_pemain(_)),
     assertz(daftar_pemain([P1, P3, P2, P4])),
     write('Urutan giliran pemain: '), cetak_urutan_dot([P1, P3, P2, P4]), nl, nl,
-    
     assertz(giliran_sekarang(P1)),
-    
+    assertz(arah_permainan(kanan)),
     shuffle_deck, bagikan_kartu_semua_pemain([P1, P3, P2, P4]),
     write('Setiap pemain mendapatkan 7 kartu acak.'), nl, nl,
     
