@@ -61,13 +61,13 @@ IF1221_G26_Bizzare/
     ├── validasi.pl              
     ├── action_card.pl           
     ├── special_rules.pl         
+    ├── file.pl
     └── endgame.pl      
 ```
 
 ---
 
 ## Anggota Kelompok
-
 
 | NIM | Nama |
 | :---: | :--- |
