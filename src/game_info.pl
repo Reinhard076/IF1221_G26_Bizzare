@@ -46,7 +46,7 @@ lihatKartu :-
     cetak_list_kartu(Tangan,1) ; format('~w belum memiliki kartu.~n', [Pemain])),
 
     (mode_permainan(turnamen) -> cari_teman(Pemain, Teman), nl,
-    format('Berikut kartu yang teman satu tim anda miliki (~w).~n' [Teman]),
+    format('Berikut kartu yang teman satu tim anda miliki (~w).~n', [Teman]),
     tangan_pemain(Teman, TanganTeman), cetak_list_kartu(TanganTeman,1) ; true).
 
 lihatKartu :-
@@ -75,9 +75,9 @@ cekInfo :- is_game_started(true),
     ; write('Kartu discard top kosong.'), nl),
     nl,
 
-    (mode_permainan(turnamen) -> tim(1, [P1,P3]), tim(2, [P2,P4]),
-    format('Tim 1 : ~w, ~w~n', [P1,P3]),
-    format('Tim 2 : ~w, ~w~n', [P2,P4]), nl ; true),
+    (mode_permainan(turnamen) -> tim(1, [P1,P2]), tim(2, [P3,P4]),
+    format('Tim 1 : ~w, ~w~n', [P1,P2]),
+    format('Tim 2 : ~w, ~w~n', [P3,P4]), nl ; true),
 
     (daftar_pemain(ListPemain) -> write('Urutan pemain: '), cetak_urutan(ListPemain), nl, nl, cetak_info_pemain(ListPemain, 1) 
     ; write('Daftar pemain belum ada.'), nl), !.
