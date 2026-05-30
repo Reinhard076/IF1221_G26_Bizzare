@@ -43,7 +43,7 @@ lihatKartu :-
     is_game_started(true), !,
     giliran_sekarang(Pemain),
     (tangan_pemain(Pemain, Tangan) -> format('Kartu yang anda punya (~w):~n', [Pemain]), 
-    cetak_list_kartu(Tangan,1) ; format('~w belum memiliki kartu.~n', [Pemain])).
+    cetak_list_kartu(Tangan,1) ; format('~w belum memiliki kartu.~n', [Pemain])),
 
     (mode_permainan(turnamen) -> cari_teman(Pemain, Teman), nl,
     format('Berikut kartu yang teman satu tim anda miliki (~w).~n' [Teman]),
