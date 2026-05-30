@@ -76,14 +76,34 @@ endGame :-
     find_all(NamaPemain, tangan_pemain(NamaPemain, _), _ListValidasi),  
     daftar_pemain(ListPemain),
     cetak_rincian_sisa_kartu(ListPemain), nl,
-    proses_skor(ListPemain, 1, DataSkorKasar),
-    bubble_sort(DataSkorKasar, DataSkorUrut),
-    write('Urutan pemenang:'), nl,
-    cetak_klasemen(DataSkorUrut, 1), nl,
-    DataSkorUrut = [skor(_, _, _, PemenangSejati)|_],
-    format('Selamat, ~w menjadi pemenang!~n', [PemenangSejati]),
+    
+    (mode_permainan(turnamen) -> write('Berikut perhitungan poin untuk masing-masing tim.'), nl,
+        tim(1, [A1, A2]), 
+        tim(2, [B1, B2]),
+        % poin anggota tim 1
+        tangan_pemain(A1, TanganA1), total_poin(TanganA1, PoinA1),
+        tangan_pemain(A2, TanganA2), total_poin(TanganA2, PoinA2),
+        TotalTim1 is PoinA1 + PoinA2,
+        format('Tim 1 (~w, ~w) : ~d + ~d = ~d poin~n', [A1, A2, PoinA1, PoinA2, TotalTim1]),
+        
+        % poin anggota tim 2
+        tangan_pemain(B1, TanganB1), total_poin(TanganB1, PoinB1),
+        tangan_pemain(B2, TanganB2), total_poin(TanganB2, PoinB2),
+        TotalTim2 is PoinB1 + PoinB2,
+        format('Tim 2 (~w, ~w) : ~d + ~d = ~d poin~n~n', [B1, B2, PoinB1, PoinB2, TotalTim2]),
+        
+        % nentuin pemenang
+        (TotalTim1 < TotalTim2 -> Pemenang = 'Tim 1' ; TotalTim2 < TotalTim1 -> Pemenang = 'Tim 2' ; 
+        Pemenang = 'Tim 1 dan Tim 2 (Seri)' % seri), format('Selamat, ~w menjadi pemenang!~n', [Pemenang]) ; 
+
+        % mode klasik
+        proses_skor(ListPemain, 1, DataSkor),
+        bubble_sort(DataSkor, DataSkorUrut),
+        write('Urutan pemenang:'), nl,
+        cetak_klasemen(DataSkorUrut, 1), nl,
+        DataSkorUrut = [skor(_, _, _, Pemenang)|_],
+        format('Selamat, ~w menjadi pemenang!~n', [Pemenang])),
+
     retractall(is_game_started(_)),
     assertz(is_game_started(false)),
     !.
-
-
