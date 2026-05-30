@@ -19,7 +19,8 @@ tantang :-
         write(Penantang), write(' mendapatkan 6 kartu acak.'), nl,
         ambilKartuAksi(Penantang, 6),
         pindah_giliran
-    ).
+    ),
+    retractall(draw_player_four(_)).
 
 tantang :-
     write('Tidak bisa melakukan tantang saat ini.'), nl.

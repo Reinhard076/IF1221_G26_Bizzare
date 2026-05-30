@@ -21,7 +21,7 @@ eksekusi_mainkan(NomorUrut) :-
         ( SisaKartu == [] 
         ->  endGame, ! 
         ;   
-            ( Jenis == skip
+            ( (Jenis == skip ;( Jenis == mimic, turn_aksi(skip, _, _, _)))
             ->  !
             ;   pindah_giliran,
                 !
@@ -48,6 +48,12 @@ ambilKartu :-
     is_game_started(true),
     draw_player_two(_),
     efek_draw_two,
+    (   turn_aksi(Aksi, Warna, PemainL, Turn) 
+    ->  T is Turn + 1,
+        retractall(turn_aksi(_, _, _, _)),
+        assertz(turn_aksi(Aksi, Warna, PemainL, T))
+    ;   true 
+    ),
     pindah_giliran,
     !.
 
@@ -55,6 +61,12 @@ ambilKartu :-
     is_game_started(true),
     draw_player_four(_),
     efek_draw_four,
+    (   turn_aksi(Aksi, Warna, PemainL, Turn) 
+    ->  T is Turn + 1,
+        retractall(turn_aksi(_, _, _, _)),
+        assertz(turn_aksi(Aksi, Warna, PemainL, T))
+    ;   true 
+    ),
     pindah_giliran,
     !.
 
@@ -69,9 +81,18 @@ ambilKartu :-
         retractall(tangan_pemain(Pemain, _)),
         assertz(tangan_pemain(Pemain, [Kartu|Tangan])),
         format('~w mengambil 1 kartu.~n', [Pemain]),
+        (   turn_aksi(Aksi, Warna, PemainL, Turn) 
+        ->  T is Turn + 1,
+            retractall(turn_aksi(_, _, _, _)),
+            assertz(turn_aksi(Aksi, Warna, PemainL, T))
+        ;   true 
+        ),
         pindah_giliran
-    ;   write('Deck kosong!'), nl
-    ).
+    ;   write('Deck kosong! Deck akan di shuffle ulang.'), nl,
+        shuffle_deck,
+        ambilKartu
+    ),
+    !.
 
 ambilKartu :-
     write('Error: Permainan belum dimulai! Gunakan startGame. dulu.'), nl.

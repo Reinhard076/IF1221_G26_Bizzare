@@ -62,6 +62,20 @@ cetak_info_pemain([Pemain|Sisa], Index) :-
     NextIndex is Index + 1,
     cetak_info_pemain(Sisa, NextIndex).
 
+cekInfo :- is_game_started(true),
+    % Discard top
+    discard_top(kartu(_, X)),
+    (X == wild ; X == wild_draw_four),
+    warna_aktif(Aktif),
+    (discard_top(kartu(Warna, Jenis)) -> format('Kartu discard top: ~w-~w(~w)~n', [Warna, Jenis, Aktif])
+    ; write('Kartu discard top kosong.'), nl),
+    nl,
+
+    % Urutan pemain
+    (daftar_pemain(ListPemain) -> write('Urutan pemain: '), cetak_urutan(ListPemain), nl, nl, cetak_info_pemain(ListPemain, 1) 
+    ; write('Daftar pemain belum ada.'), nl), !.
+
+
 cekInfo :- is_game_started(true), !,
     % Discard top
     (discard_top(kartu(Warna, Jenis)) -> format('Kartu discard top: ~w-~w~n', [Warna, Jenis])
