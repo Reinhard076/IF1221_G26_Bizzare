@@ -33,13 +33,6 @@ eksekusi_mainkan(NomorUrut) :-
 eksekusi_mainkan(_) :-
     write('Nomor kartu tidak valid.'), nl.
 
-% validasiKartu/1
-% validasiKartu(kartu(_, wild))           :- !.
-% validasiKartu(kartu(_, wild_draw_four)) :- !.
-% validasiKartu(kartu(W, _)) :- warna_aktif(W), !.
-% validasiKartu(kartu(W, _)) :- discard_top(kartu(W, _)), W \= none, !.
-% validasiKartu(kartu(_, J)) :- discard_top(kartu(_, J)), !.
-
 ambilKartu :-
     is_game_started(true),
     draw_player_two(_),
@@ -156,17 +149,16 @@ swapKartu(NomorUrut, NomorTeman) :-
     hapus_kartu(Pemain, Kartu),
     hapus_kartu(Teman, KartuTeman),
     
-    tangan_pemain(Pemain, TanganKuBaru),
+    tangan_pemain(Pemain, TanganBaru),
     tangan_pemain(Teman, TanganTemanBaru),
     retractall(tangan_pemain(Pemain, _)),
     retractall(tangan_pemain(Teman, _)),
     
-    assertz(tangan_pemain(Pemain, [KartuTeman|TanganKuBaru])),
+    assertz(tangan_pemain(Pemain, [KartuTeman|TanganBaru])),
     assertz(tangan_pemain(Teman, [Kartu|TanganTemanBaru])),
     
-    format('~w menukar kartu ~w-~w dengan kartu ~w-~w milik ~w.~n', [Pemain, Warna, Jenis, WarnaTeman, JenisTeman, Teman]),
-    write('Pertukaran kartu berhasil.'), nl,
-    
+    format('~w menukar kartu ~w-~w dengan kartu ~w-~w milik ~w.~n', [Pemain, Warna, Jenis, WarnaTeman, JenisTeman, Teman]), nl,
+    write('Pertukaran kartu berhasil.'), nl, nl,
     pindah_giliran,
     !.
 
