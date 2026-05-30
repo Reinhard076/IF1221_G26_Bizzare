@@ -22,3 +22,6 @@
 % Fakta untuk helper
 :- dynamic(temp/1).
 
+% mode turnamen
+:- dynamic(mode_permainan/1).
+:- dynamic(tim/2).
