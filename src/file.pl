@@ -8,6 +8,10 @@ save :-
     write('Hanya bisa tantang atau mengambil kartu!'),
     !.
 
+save :-
+    draw_player_two(_),
+    write('Hanya bisa mengambil kartu!'),
+    !.
 
 
 save :-

@@ -125,10 +125,12 @@ ambilKartuAksi(Pemain, Jumlah) :-
         assertz(deck(Sisa)),
         tangan_pemain(Pemain, Tangan),
         retractall(tangan_pemain(Pemain, _)),
-        assertz(tangan_pemain(Pemain, [Kartu|Tangan]))
-    ;   write('Deck kosong!'), nl
+        assertz(tangan_pemain(Pemain, [Kartu|Tangan])),
+        J is Jumlah - 1
+    ;   write('Deck kosong! Deck akan di shuffle ulang.'), nl,
+        shuffle_deck,
+        J is Jumlah
     ),
-    J is Jumlah - 1,
     ambilKartuAksi(Pemain, J),
     !.
 
