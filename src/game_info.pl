@@ -42,7 +42,12 @@ cetak_list_kartu([kartu(Warna, Jenis)|Sisa], Index) :-
 lihatKartu :-
     is_game_started(true), !,
     giliran_sekarang(Pemain),
-    (tangan_pemain(Pemain, Tangan) -> format('Kartu yang anda punya (~w):~n', [Pemain]), cetak_list_kartu(Tangan,1) ; format('~w belum memiliki kartu.~n', [Pemain])).
+    (tangan_pemain(Pemain, Tangan) -> format('Kartu yang anda punya (~w):~n', [Pemain]), 
+    cetak_list_kartu(Tangan,1) ; format('~w belum memiliki kartu.~n', [Pemain])).
+
+    (mode_permainan(turnamen) -> cari_teman(Pemain, Teman), nl,
+    format('Berikut kartu yang teman satu tim anda miliki (~w).~n' [Teman]),
+    tangan_pemain(Teman, TanganTeman), cetak_list_kartu(TanganTeman,1) ; true).
 
 lihatKartu :-
     write('Error: Permainan belum dimulai! Gunakan startGame. dulu.'), nl.
@@ -63,7 +68,6 @@ cetak_info_pemain([Pemain|Sisa], Index) :-
     cetak_info_pemain(Sisa, NextIndex).
 
 cekInfo :- is_game_started(true),
-    % Discard top
     discard_top(kartu(_, X)),
     (X == wild ; X == wild_draw_four),
     warna_aktif(Aktif),
@@ -71,18 +75,19 @@ cekInfo :- is_game_started(true),
     ; write('Kartu discard top kosong.'), nl),
     nl,
 
-    % Urutan pemain
+    (mode_permainan(turnamen) -> tim(1, [P1,P3]), tim(2, [P2,P4]),
+    format('Tim 1 : ~w, ~w~n', [P1,P3]),
+    format('Tim 2 : ~w, ~w~n', [P2,P4]), nl ; true),
+
     (daftar_pemain(ListPemain) -> write('Urutan pemain: '), cetak_urutan(ListPemain), nl, nl, cetak_info_pemain(ListPemain, 1) 
     ; write('Daftar pemain belum ada.'), nl), !.
 
 
 cekInfo :- is_game_started(true), !,
-    % Discard top
     (discard_top(kartu(Warna, Jenis)) -> format('Kartu discard top: ~w-~w~n', [Warna, Jenis])
     ; write('Kartu discard top kosong.'), nl),
     nl,
 
-    % Urutan pemain
     (daftar_pemain(ListPemain) -> write('Urutan pemain: '), cetak_urutan(ListPemain), nl, nl, cetak_info_pemain(ListPemain, 1) 
     ; write('Daftar pemain belum ada.'), nl).
 

@@ -7,7 +7,16 @@ startGame :-
     write('Permainan sudah dimulai.').
 
 startGame :-
+    write('Tersedia 2 mode permainan.'), nl,
+    write('1. Mode klasik'), nl,
+    write('2. Mode turnamen'), nl, nl,
+    write('Pilih mode permainan: '),
+    read(Mode), nl, nl,
+    proses_mode(Mode), !.
+
+proses_mode(1) :-
     assertz(is_game_started(true)),
+    assertz(mode_permainan(klasik)),
     assertz(arah_permainan(kanan)),
     assertz(sudah_uni([])),
     write('Masukkan jumlah pemain: '),
@@ -31,6 +40,36 @@ startGame :-
     format('Kartu discard top: ~w-~w.~n', [Warna, Jenis]), nl,
     format('Giliran ~w.~n', [PemainPertama]),
     !.
+
+proses_mode(2) :-
+    assertz(is_game_started(true)),
+    assertz(mode_permainan(turnamen)),
+    write('Permainan dimulai dalam mode turnamen.'), nl, nl,
+
+    assertz(jumlah_pemain(4)),
+    read_PlayerNames(4, 1),
+    randomizer,
+
+    daftar_pemain([P1,P2,P3,P4]),
+    assertz(tim(1, [P1,P3])),
+    assertz(tim(2, [P2,P4])), nl,
+    write('Membentuk tim secara acak...'), nl,
+    format('Tim 1 : ~w, ~w~n', [P1,P3]),
+    format('Tim 2 : ~w, ~w~n', [P2,P4]), nl,
+    write('Urutan pemain: '), cetak_urutan_dot([P1,P3,P2,P4]), nl, nl,
+    assertz(giliran_sekarang(P1)),
+
+    shuffle_deck,
+    bagikan_kartu_semua_pemain([P1,P2,P3,P4]),
+    write('Setiap pemain mendapatkan 7 kartu acak.'), nl, nl,
+    inisialisasi_discard_pile,
+    discard_top(kartu(Warna, Jenis)),
+    format('Kartu discard top: ~w-~w.~n', [Warna, Jenis]), nl,
+    format('Giliran ~w.~n', [P1]),
+    !.
+
+proses_mode(_):-
+    write('Pilihan tidak valid, ulangi perintah startGame.'), nl, fail.
 
 valid_Player(Player) :-
     Player >= 2,

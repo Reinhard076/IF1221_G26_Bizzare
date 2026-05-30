@@ -40,10 +40,6 @@ eksekusi_mainkan(_) :-
 % validasiKartu(kartu(W, _)) :- discard_top(kartu(W, _)), W \= none, !.
 % validasiKartu(kartu(_, J)) :- discard_top(kartu(_, J)), !.
 
-% orang 2 panggil fungsi action cardsnya
-% orang 3 panggil status UNI
-% orang 4 panggil pengecekan endgame
-
 ambilKartu :-
     is_game_started(true),
     draw_player_two(_),
@@ -136,3 +132,50 @@ hapus_kartu(Pemain, Kartu) :-
 
 hapus_elemen_pertama(X, [X|T], T) :- !.
 hapus_elemen_pertama(X, [H|T], [H|R]) :- hapus_elemen_pertama(X, T, R).
+
+swapKartu(NomorUrut, NomorTeman) :-
+    is_game_started(true),
+    mode_permainan(turnamen), !,
+    giliran_sekarang(Pemain),
+    cari_teman(Pemain, Teman),
+    
+    tangan_pemain(Pemain, Tangan),
+    tangan_pemain(Teman, TanganTeman),
+    panjang_list(Tangan, Len),
+    panjang_list(TanganTeman, LenTeman),
+    (Len =< 1 -> write('Gagal: Kamu hanya memiliki 1 kartu.'), nl, fail ; true),
+    (LenTeman =< 1 -> format('Gagal: Temanmu (~w) hanya memiliki 1 kartu.~n', [Teman]), nl, fail ; true),
+    NomorUrut >= 1, NomorUrut =< Len,
+    NomorTeman >= 1, NomorTeman =< LenTeman,
+    Idx is NomorUrut - 1, IdxTeman is NomorTeman - 1,
+    nilaiIdx(Idx, Tangan, Kartu),
+    nilaiIdx(IdxTeman, TanganTeman, KartuTeman),
+    
+    Kartu = kartu(Warna, Jenis),
+    KartuTeman = kartu(WarnaTeman, JenisTeman),
+    hapus_kartu(Pemain, Kartu),
+    hapus_kartu(Teman, KartuTeman),
+    
+    tangan_pemain(Pemain, TanganKuBaru),
+    tangan_pemain(Teman, TanganTemanBaru),
+    retractall(tangan_pemain(Pemain, _)),
+    retractall(tangan_pemain(Teman, _)),
+    
+    assertz(tangan_pemain(Pemain, [KartuTeman|TanganKuBaru])),
+    assertz(tangan_pemain(Teman, [Kartu|TanganTemanBaru])),
+    
+    format('~w menukar kartu ~w-~w dengan kartu ~w-~w milik ~w.~n', [Pemain, Warna, Jenis, WarnaTeman, JenisTeman, Teman]),
+    write('Pertukaran kartu berhasil.'), nl,
+    
+    pindah_giliran,
+    !.
+
+swapKartu(_, _) :-
+    \+ mode_permainan(turnamen), !,
+    write('Error: Perintah swapKartu hanya tersedia pada Mode Turnamen!'), nl.
+
+swapKartu(_, _) :-
+    write('Error: Nomor urut kartu tidak valid (out of range).'), nl.
+
+cari_teman(P1, P2) :- tim(_, [P1, P2]), !.
+cari_teman(P2, P1) :- tim(_, [P1, P2]), !.
