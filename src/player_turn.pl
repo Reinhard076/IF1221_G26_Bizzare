@@ -16,10 +16,16 @@ eksekusi_mainkan(NomorUrut) :-
         ;  true),
         format('~w memainkan kartu: ~w-~w~n', [Pemain, Warna, Jenis]),
         efek(Warna, Jenis),
-        ( (Jenis == skip ;( Jenis == mimic, turn_aksi(skip, _, _, _)))
-        ->  !
-        ;   pindah_giliran,
-            !
+        
+        tangan_pemain(Pemain, SisaKartu),
+        ( SisaKartu == [] 
+        ->  endGame, ! 
+        ;   
+            ( (Jenis == skip ;( Jenis == mimic, turn_aksi(skip, _, _, _)))
+            ->  !
+            ;   pindah_giliran,
+                !
+            )
         )
     ;   write('Kartu tidak cocok dengan discard top.'), nl
     ).
