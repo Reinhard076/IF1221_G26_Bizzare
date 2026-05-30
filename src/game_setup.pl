@@ -45,28 +45,32 @@ proses_mode(2) :-
     assertz(is_game_started(true)),
     assertz(mode_permainan(turnamen)),
     write('Permainan dimulai dalam mode turnamen.'), nl, nl,
-
-    assertz(jumlah_pemain(4)),
+    assertz(jumlah_pemain(4)), % Turnamen wajib 4 orang
     read_PlayerNames(4, 1),
-    randomizer,
 
-    daftar_pemain([P1,P2,P3,P4]),
-    assertz(tim(1, [P1,P3])),
-    assertz(tim(2, [P2,P4])), nl,
-    write('Membentuk tim secara acak...'), nl,
-    format('Tim 1 : ~w, ~w~n', [P1,P3]),
-    format('Tim 2 : ~w, ~w~n', [P2,P4]), nl,
-    write('Urutan pemain: '), cetak_urutan_dot([P1,P3,P2,P4]), nl, nl,
+    % acak urutan pemain
+    randomizer, 
+    daftar_pemain([P1, P2, P3, P4]),
+    assertz(tim(1, [P1, P2])),
+    assertz(tim(2, [P3, P4])),
+    nl, write('Membentuk tim secara acak...'), nl, nl,
+    format('Tim 1 : ~w dan ~w~n', [P1, P2]),
+    format('Tim 2 : ~w dan ~w~n', [P3, P4]), nl,
+
+    % buat selang-seling
+    retractall(daftar_pemain(_)),
+    assertz(daftar_pemain([P1, P3, P2, P4])),
+    write('Urutan giliran pemain: '), cetak_urutan_dot([P1, P3, P2, P4]), nl, nl,
+    
     assertz(giliran_sekarang(P1)),
-
-    shuffle_deck,
-    bagikan_kartu_semua_pemain([P1,P2,P3,P4]),
+    
+    shuffle_deck, bagikan_kartu_semua_pemain([P1, P3, P2, P4]),
     write('Setiap pemain mendapatkan 7 kartu acak.'), nl, nl,
-    inisialisasi_discard_pile,
-    discard_top(kartu(Warna, Jenis)),
+    
+    inisialisasi_discard_pile, discard_top(kartu(Warna, Jenis)),
     format('Kartu discard top: ~w-~w.~n', [Warna, Jenis]), nl,
-    format('Giliran ~w.~n', [P1]),
-    !.
+    
+    format('Giliran ~w.~n', [P1]), !.
 
 proses_mode(_):-
     write('Pilihan tidak valid, ulangi perintah startGame.'), nl, fail.
