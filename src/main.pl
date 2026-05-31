@@ -9,6 +9,7 @@
 :- include('validasi.pl').
 :- include('file.pl').
 :- include('special_rules.pl').
+:- include('gods_hand.pl').
 
 start :-
     write('Selamat datang di Game UNI!'), nl,
