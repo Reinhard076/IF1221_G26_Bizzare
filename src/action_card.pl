@@ -45,6 +45,8 @@ efek_aksi(skip) :-
     giliran_sekarang(Next),
     format('~w diskip.~n', [Next]),
     pindah_giliran_skip,
+    giliran_sekarang(Now),
+    format('Sekarang giliran ~w.', [Now]),
     !.
 
 efek_aksi(reverse) :-

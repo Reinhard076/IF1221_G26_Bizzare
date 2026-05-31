@@ -20,10 +20,12 @@ tantang :-
         ambilKartuAksi(Penantang, 6),
         pindah_giliran
     ),
-    retractall(draw_player_four(_)).
+    retractall(draw_player_four(_)),
+    !.
 
 tantang :-
-    write('Tidak bisa melakukan tantang saat ini.'), nl.
+    write('Tidak bisa melakukan tantang saat ini.'), nl,
+    !.
 
 pindah_giliran_tantang :-
     giliran_sekarang(Current),
