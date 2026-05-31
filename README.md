@@ -62,6 +62,7 @@ IF1221_G26_Bizzare/
     ├── action_card.pl           
     ├── special_rules.pl         
     ├── file.pl
+    ├── gods_hand.pl
     └── endgame.pl      
 ```
 
