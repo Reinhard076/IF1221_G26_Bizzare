@@ -10,6 +10,7 @@
 :- include('file.pl').
 :- include('special_rules.pl').
 :- include('gods_hand.pl').
+:- include('endgame.pl').
 
 start :-
     write('Selamat datang di Game UNI!'), nl,
