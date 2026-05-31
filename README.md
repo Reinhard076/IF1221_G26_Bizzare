@@ -68,6 +68,20 @@ IF1221_G26_Bizzare/
 
 ---
 
+## Fitur Utama
+
+* **Mode Permainan:** Tersedia Mode Klasik untuk permainan individu (2-4 pemain) dan Mode Turnamen untuk permainan berbasis tim (2v2).
+* **Mekanik Kartu Aksi:** Mendukung penggunaan kartu aksi standar seperti *Skip*, *Reverse*, *Draw Two*, *Wild*, dan *Wild Draw Four*, serta penambahan kartu khusus *Mimic*.
+* **Sistem Deklarasi UNI dan Penalti:** Pemain wajib mendeklarasikan UNI ketika kartu tersisa satu. Terdapat perintah `tangkap` untuk memberikan penalti kepada pemain yang tidak melakukan deklarasi.
+* **Sistem Tantangan (Challenge):** Pemain dapat melakukan `tantang` terhadap penggunaan kartu *Wild Draw Four* untuk membalikkan efek penalti.
+* **Sistem Tim (Khusus Turnamen):** Menyediakan perintah `swapKartu` yang memungkinkan pemain untuk bertukar kartu dengan rekan satu tim.
+* **Sistem Penyimpanan (Save & Load):** Permainan dapat dihentikan sementara dengan menyimpan status (state) permainan ke dalam file `.txt` dan dapat dimuat kembali pada sesi berikutnya.
+* **Fitur Bonus:**
+  * **God's Hand:** Mekanisme acak dengan probabilitas 20% yang menukarkan kartu antar pemain secara otomatis.
+  * **Hidden Card:** Kemampuan untuk menyembunyikan satu kartu di tangan dari pengecekan lawan untuk strategi permainan.
+
+---
+
 ## Anggota Kelompok
 
 | NIM | Nama |
