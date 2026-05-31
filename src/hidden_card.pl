@@ -31,11 +31,3 @@ sembunyikanKartu(_, NomorUrut, HandAwal, HandAwal) :-
     \+ nilaiIdx(Indeks, HandAwal, _),
     write('Gagal: Nomor urut kartu tidak valid!'), nl.
 
-tangkap(NamaTarget) :-
-    kartu_tersembunyi(NamaTarget, kartu(Warna, Jenis)),
-    write('Terdapat kartu yang disembunyikan oleh '), write(NamaTarget), write('.'), nl,
-    write('Kartunya adalah: '), write(Warna), write('-'), write(Jenis), nl.
-
-tangkap(NamaTarget) :-
-    \+ kartu_tersembunyi(NamaTarget, _),
-    write(NamaTarget), write(' tidak menyembunyikan kartu apapun.'), nl.
