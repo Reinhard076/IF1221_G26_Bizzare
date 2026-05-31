@@ -27,6 +27,13 @@ save :-
 
 writeFile(FileName) :-
     open(FileName, write, Stream),
+    mode_permainan(Mode),
+    write(Stream, mode_permainan:Mode), write(Stream, '.'),
+    nl(Stream),
+    (   Mode == turnamen
+    ->  writeTim(Stream)  
+    ;   true
+    ),
     daftar_pemain(DaftarPemain),
     write(Stream, daftar_pemain:DaftarPemain), write(Stream, '.'),
     nl(Stream),
@@ -48,6 +55,7 @@ writeFile(FileName) :-
     sudah_uni(SudahUni),
     write(Stream, sudah_uni:SudahUni), write(Stream, '.'),
     nl(Stream),
+    writeKartuTersembunyi(Stream),
     writeTangan(Stream),
     deck(Deck),
     write(Stream, deck:Deck), write(Stream, '.'),
@@ -65,6 +73,25 @@ writeTangan(Stream) :-
 writeTangan(_) :-
     !.
 
+writeTim(Stream) :-
+    tim(NomorTim, ListTim),
+    write(Stream, tim(NomorTim):ListTim),
+    write(Stream, '.'),
+    nl(Stream),
+    fail.
+
+writeTim(_) :-
+    !.
+
+writeKartuTersembunyi(Stream) :-
+    kartu_tersembunyi(Nama, Kartu),
+    write(Stream, tersembunyi(Nama):Kartu), write(Stream, '.'),
+    nl(Stream),
+    fail.
+
+writeKartuTersembunyi(_) :-
+    !.
+
 retractDynamic :-
     retractall(is_game_started(_)),
     retractall(jumlah_pemain(_)),
@@ -75,7 +102,10 @@ retractDynamic :-
     retractall(arah_permainan(_)),
     retractall(daftar_pemain(_)),
     retractall(tangan_pemain(_, _)),
-    retractall(discard_top(_)).
+    retractall(discard_top(_)),
+    retractall(mode_permainan(_)),
+    retractall(tim(_, _)),
+    retractall(kartu_tersembunyi(_, _)).
 
 load :-
     is_game_started(true),
@@ -151,8 +181,22 @@ assertFile(Data) :-
     assertz(sudah_uni(ListPemain)),
     !.
 
-%bacatangan
 assertFile(Data) :-
     Data = kartu(Nama):ListTangan,
     assertz(tangan_pemain(Nama, ListTangan)),
+    !.
+
+assertFile(Data) :-
+    Data = tim(NomorTim):ListTim,
+    assertz(tim(NomorTim, ListTim)),
+    !.
+
+assertFile(Data) :-
+    Data = mode_permainan:Mode,
+    assertz(mode_permainan(Mode)),
+    !.
+
+assertFile(Data) :-
+    Data = tersembunyi(Nama):Kartu,
+    assertz(kartu_tersembunyi(Nama, Kartu)),
     !.

@@ -43,6 +43,7 @@ proses_mode(1) :-
 
 proses_mode(2) :-
     assertz(is_game_started(true)),
+    assertz(sudah_uni([])),
     assertz(mode_permainan(turnamen)),
     write('Permainan dimulai dalam mode turnamen.'), nl, nl,
     assertz(jumlah_pemain(4)), % Turnamen wajib 4 orang
